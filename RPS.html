@@ -12,95 +12,123 @@
             <button id="SCISSORS">SCISSORS</button>
         </div>
         <div id="resultBox"></div>
+        <div id="scorePlayer"></div>
+        <div id="scoreComputer"></div>
+
     </body>
 </html>
 
 <script>
 /* New challenge = Create a UI
 - [x] remove logic that play several rounds
-- [ ] Create 3 buttons for each selection
+- [x] Create 3 buttons for each selection
     - add an event listner
     - call playround when clicked
     - use the correct input from player into playround
-- [ ] add a div to display the result from `console.log`
+- [x] add a div to display the result from `console.log`
 - [ ] Display the running score and announce a winner of the game once 5 rounds have been played
 - [ ] merge change into main branch
 */
-        // FUNCTION => select a value for the computer ramdomly
-        function computerSelection() { 
-            switch(Math.floor((Math.random()*3)+1)){ 
-                // Start by creating a ramdom number between 1 and 3
-                // Then according to the value will affect the right text
-                case 1: computerChoice="ROCK"       
-                    break;
-                case 2: computerChoice="PAPER"      
-                    break;
-                case 3: computerChoice="SCISSORS"   
-                    break;  
-            };
-            return(computerChoice);
-        };
-        // FUNCTION => Promt the user to make a choice
-        function playerSelection(){ // promt the user to enter his choice
-            return prompt("Please choose by typing -ROCK-PAPER-SCISSORS- :").toUpperCase() 
+
+// Select Div to update in the DOM
+const runningScorePlayerDiv = document.querySelector('#scorePlayer');
+const runningScoreComputerDiv = document.querySelector('#scoreComputer');
+const resultBox = document.querySelector('#resultBox');
+
+
+// FUNCTION => select a value for the computer ramdomly
+function computerSelection() { 
+    switch(Math.floor((Math.random()*3)+1)){ 
+        // Start by creating a ramdom number between 1 and 3
+        // Then according to the value will affect the right text
+        case 1: computerChoice="ROCK"       
+            break;
+        case 2: computerChoice="PAPER"      
+            break;
+        case 3: computerChoice="SCISSORS"   
+            break;  
+    };
+    return(computerChoice);
+};
+
+// FUNCTION => Promt the user to make a choice
+function playerSelection(){ // promt the user to enter his choice
+    return prompt("Please choose by typing -ROCK-PAPER-SCISSORS- :").toUpperCase() 
             // the toUpperCase avoid any case sensitive error
-        };
-        // FUNCTION => PLay a round and return the result
-        function playRound(playerSelection, computerSelection){ 
-            console.log(playerSelection + computerSelection);
-            // Compare computer and player input and result resul in the form of a message
-            let result=null; // will drive the result -1 0 1
-            if (playerSelection=="ROCK"){ // compare all case and define the value of "result"
-                if (computerSelection=="ROCK"){result=0;}
-                else if (computerSelection=="PAPER"){result=-1;}
-                else if (computerSelection=="SCISSORS"){result=1;}
-            }
-            else if (playerSelection=="PAPER"){
-                if (computerSelection=="ROCK"){result=1;}
-                else if (computerSelection=="PAPER"){result=0;}
-                else if (computerSelection=="SCISSORS"){result=-1;}
-            }
-            else if (playerSelection=="SCISSORS"){
-                if (computerSelection=="ROCK"){result=-1;}
-                else if (computerSelection=="PAPER"){result=1;}
-                else if (computerSelection=="SCISSORS"){result=0;}
-            };
-            
-            let message=null; // create the message according to the value of result
-            switch (result){ // I used switch as if did not work for misterious reasons.
-                case 1:
-                    message="YOU WIN, you choose "+playerSelection+" and computer choose "+computerSelection;
-                    break;
-                case 0:
-                    message= "IT'S A TOLL, you choose "+playerSelection+" and computer choose "+computerSelection;
-                    break;
-                case -1:
-                    message= "YOU LOSE, you choose "+playerSelection+" and computer choose "+computerSelection;
-                    break;
-            };
-            console.log(message);
-            return result;
-        };
+};
 
-        function game(numberRound){
-            let finalResult=0
-            for (a=1 ; a<=numberRound; a++){
-                finalResult=finalResult+playRound(playerSelection(),computerSelection());
-            };
-            if (finalResult>=0){
-                console.log("Player won.");
-            } else {
-                console.log("Player lost.")
-            };
+// FUNCTION => PLay a round and return the result
+function playRound(playerSelection, computerSelection){ 
+    console.log(playerSelection + computerSelection);
+    // Compare computer and player input and result resul in the form of a message
+    let result=null; // will drive the result -1 0 1
+    if (playerSelection=="ROCK"){ // compare all case and define the value of "result"
+        if (computerSelection=="ROCK"){result=0;}
+        else if (computerSelection=="PAPER"){result=-1;}
+        else if (computerSelection=="SCISSORS"){result=1;}
+        }   
+    else if (playerSelection=="PAPER"){
+        if (computerSelection=="ROCK"){result=1;}
+        else if (computerSelection=="PAPER"){result=0;}
+        else if (computerSelection=="SCISSORS"){result=-1;}
         }
+    else if (playerSelection=="SCISSORS"){
+        if (computerSelection=="ROCK"){result=-1;}
+        else if (computerSelection=="PAPER"){result=1;}
+        else if (computerSelection=="SCISSORS"){result=0;}
+    };
+     let message=null; // create the message according to the value of result
+    switch (result){ // I used switch as if did not work for misterious reasons.
+        case 1:
+            message="YOU WIN, you choose "+playerSelection+" and computer choose "+computerSelection;
+            runningScorePlayer ++;
+            break;
+        case 0:
+            message= "IT'S A TOLL, you choose "+playerSelection+" and computer choose "+computerSelection;
+            break;
+        case -1:
+            message= "YOU LOSE, you choose "+playerSelection+" and computer choose "+computerSelection;
+            runningScoreComputer ++;
+            break;
+    };
+    console.log(message);
+    // update the result box
+    resultBox.textContent = message;
 
-        // Create event listener
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach((button) => {
-            button.addEventListener('click', ()=>{
-                playRound(button.id,computerSelection());
-            });
-        });
+    // Update the score div
+    runningScorePlayerDiv.textContent = `Player Score: ${runningScorePlayer}`;
+    runningScoreComputerDiv.textContent= `Computer Score: ${runningScoreComputer}`;
+    return result;
+};
+// Function to call a number of games
+function game(numberRound){
+    let finalResult=0
+    for (a=1 ; a<=numberRound; a++){
+        finalResult=finalResult+playRound(playerSelection(),computerSelection());
+    };
+    if (finalResult>=0){
+        console.log("Player won.");
+    } else {
+        console.log("Player lost.")
+    };
+};
+// keep a running score counter
+let runningScorePlayer = 0;
+let runningScoreComputer = 0;
+
+
+
+// Create event listener for the buttons
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+    button.addEventListener('click', ()=>{
+        playRound(button.id,computerSelection());
+        console.log("Player: " + runningScorePlayer + " Computer:" + runningScoreComputer);
+    });
+});
+
+
+
 
 
 </script>
