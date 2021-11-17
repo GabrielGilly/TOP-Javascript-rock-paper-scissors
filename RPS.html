@@ -2,18 +2,18 @@
 <head>
     <title>Rock-Paper-Scissors</title>
     <meta charset="UTF-8">
+</head>
+
+<html>
     <body>
         <div id="buttons">
-            <button id="rockbtn">ROCK</button>
-            <button id="paperbtn">PAPER</button>
-            <button id="scissorsbtn">SCISSORS</button>
+            <button id="ROCK">ROCK</button>
+            <button id="PAPER">PAPER</button>
+            <button id="SCISSORS">SCISSORS</button>
         </div>
         <div id="resultBox"></div>
     </body>
-</head>
-
-
-<html>
+</html>
 
 <script>
 /* New challenge = Create a UI
@@ -47,6 +47,7 @@
         };
         // FUNCTION => PLay a round and return the result
         function playRound(playerSelection, computerSelection){ 
+            console.log(playerSelection + computerSelection);
             // Compare computer and player input and result resul in the form of a message
             let result=null; // will drive the result -1 0 1
             if (playerSelection=="ROCK"){ // compare all case and define the value of "result"
@@ -97,10 +98,9 @@
         const buttons = document.querySelectorAll('button');
         buttons.forEach((button) => {
             button.addEventListener('click', ()=>{
-                playround(button.id,computerSelection());
+                playRound(button.id,computerSelection());
             });
-        };
+        });
 
 
 </script>
-</html>
