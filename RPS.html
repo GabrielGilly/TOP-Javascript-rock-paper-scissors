@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head>
+    <title>Rock-Paper-Scissors</title>
+    <meta charset="UTF-8">
+    
+</head>
+
+<html>
+
+    <script>
+        function computerSelection() { // call the computer choice
+            switch(Math.floor((Math.random()*3)+1)){ // start by creating a ramdom number between 1 and 3
+                case 1:
+                    computerChoice="ROCK" // convert the ramdom number to the value
+                    break;
+                case 2:
+                    computerChoice="PAPER"
+                    break;
+                case 3:
+                    computerChoice="SCISSORS"
+                break;  
+            }
+            return(computerChoice);
+        }
+        function playerSelection(){ // promt the user to enter his choice
+            return prompt("Please choose by typing -ROCK-PAPER-SCISSORS- :").toUpperCase() // the toUpperCase avoid any case sensitive error
+        }
+        function playRound(playerSelection, computerSelection){ // Compare computer and player input and result resul in the form of a message
+            let result=null; // will drive the result -1 0 1
+            if (playerSelection=="ROCK"){ // compare all case and define the value of "result"
+                if (computerSelection=="ROCK"){result=0;}
+                else if (computerSelection=="PAPER"){result=-1;}
+                else if (computerSelection=="SCISSORS"){result=1;}
+            }
+            else if (playerSelection=="PAPER"){
+                if (computerSelection=="ROCK"){result=1;}
+                else if (computerSelection=="PAPER"){result=0;}
+                else if (computerSelection=="SCISSORS"){result=-1;}
+            }
+            else if (playerSelection=="SCISSORS"){
+                if (computerSelection=="ROCK"){result=-1;}
+                else if (computerSelection=="PAPER"){result=1;}
+                else if (computerSelection=="SCISSORS"){result=0;}
+            }
+            
+            let message=null; // create the message according to the value of result
+            switch (result){ // I used switch as if did not work for misterious reasons.
+                case 1:
+                    message="YOU WIN, you choose "+playerSelection+" and computer choose "+computerSelection;
+                    break;
+                case 0:
+                    message= "IT'S A TOLL, you choose "+playerSelection+" and computer choose "+computerSelection;
+                    break;
+                case -1:
+                    message= "YOU LOSE, you choose "+playerSelection+" and computer choose "+computerSelection;
+                    break;
+            }
+            console.log(message);
+            return result;
+        }
+        function game(numberRound){
+            let finalResult=0
+            for (a=1 ; a<=numberRound; a++){
+                finalResult=finalResult+playRound(playerSelection(),computerSelection());
+            }
+            if (finalResult>=0){
+                console.log("Player won.");
+            }
+            else 
+                console.log("Player lost.")
+        }
+
+        game(5);
+    </script>
+</html>
