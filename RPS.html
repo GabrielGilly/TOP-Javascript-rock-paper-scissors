@@ -59,7 +59,6 @@ function playerSelection(){ // promt the user to enter his choice
 
 // FUNCTION => PLay a round and return the result
 function playRound(playerSelection, computerSelection){ 
-    console.log(playerSelection + computerSelection);
     // Compare computer and player input and result resul in the form of a message
     let result=null; // will drive the result -1 0 1
     if (playerSelection=="ROCK"){ // compare all case and define the value of "result"
@@ -115,7 +114,8 @@ function game(numberRound){
 // keep a running score counter
 let runningScorePlayer = 0;
 let runningScoreComputer = 0;
-
+let gameCounter=0;
+let resultMessage;
 
 
 // Create event listener for the buttons
@@ -124,6 +124,21 @@ buttons.forEach((button) => {
     button.addEventListener('click', ()=>{
         playRound(button.id,computerSelection());
         console.log("Player: " + runningScorePlayer + " Computer:" + runningScoreComputer);
+        gameCounter++;
+        console.log(gameCounter);
+        if (gameCounter>=5){
+            if (runningScorePlayer>runningScoreComputer){
+                resultMessage = `Congratulation, You Won ${runningScorePlayer} - ${runningScoreComputer}`;
+            } else if (runningScorePlayer<runningScoreComputer){
+                resultMessage = `Oops, You loose ${runningScorePlayer} - ${runningScoreComputer}`;
+            } else {
+                resultMessage = "It looks like nobody won, play again."
+            };
+            gameCounter=0;
+            runningScoreComputer=0;
+            runningScorePlayer=0;
+            alert(resultMessage);
+        };
     });
 });
 
